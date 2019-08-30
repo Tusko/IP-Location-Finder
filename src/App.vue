@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <vue-map
+      v-show="!loading"
+      api-key="AIzaSyA_GkVQfPLIp99nbA3tGNH7C1ADQl0ayWQ"
+      :lat="coordinates.lat"
+      :lng="coordinates.lng"
+      :accuracy="coordinates.radius"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+require("./styles.scss");
+import axios from "axios";
 export default {
   name: "app",
   components: {
-    HelloWorld
+    "vue-map": () => import("./components/VueMaps")
+  },
+  data: () => ({
+    loading: true,
+    coordinates: {
+      lat: null,
+      lng: null,
+      radius: null
+    }
+  }),
+  beforeCreate() {
+    axios("http://www.geoplugin.net/json.gp?jsoncallback=").then(r => {
+      this.coordinates.lat = r.data.geoplugin_latitude;
+      this.coordinates.lng = r.data.geoplugin_longitude;
+      this.coordinates.radius = r.data.geoplugin_locationAccuracyRadius;
+      this.loading = false;
+    });
   }
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
