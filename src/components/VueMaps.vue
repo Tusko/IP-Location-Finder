@@ -8,10 +8,6 @@ import { gMapStyle } from "./gmap-style";
 export default {
   name: "gVueMap",
   props: {
-    apiKey: {
-      type: String,
-      default: ""
-    },
     lat: {
       type: String,
       default: 0
@@ -27,7 +23,7 @@ export default {
   methods: {
     loadMapApiScript() {
       this.$loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}`
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_MAP_API_KEY}`
       )
         .then(() => {
           map = new google.maps.Map(document.getElementById("map"), {

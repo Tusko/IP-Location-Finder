@@ -1,11 +1,6 @@
 <template>
   <div id="app">
-    <vue-map
-      v-show="!loading"
-      api-key="AIzaSyA_GkVQfPLIp99nbA3tGNH7C1ADQl0ayWQ"
-      :lat="coordinates.lat"
-      :lng="coordinates.lng"
-    />
+    <vue-map v-show="!loading" :lat="coordinates.lat" :lng="coordinates.lng" />
     <marker-pulse :loading="loading" />
     <form v-show="!loading" class="lookup" novalidate @submit.prevent="formLookup">
       <h1>IP Lookup</h1>
@@ -36,7 +31,6 @@
 <script>
 require("./styles.scss");
 import axios from "axios";
-const ipInfoToken = "cc9000ffb074c6";
 
 export default {
   name: "app",
@@ -65,7 +59,7 @@ export default {
   methods: {
     startLookup() {
       this.loading = true;
-      axios(`https://ipinfo.io/?token=${ipInfoToken}`)
+      axios(`https://ipinfo.io/?token=${process.env.VUE_APP_IP_KEY}`)
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
     },
@@ -73,7 +67,9 @@ export default {
       e.preventDefault();
       this.loading = true;
 
-      axios(`http://ipinfo.io/${this.lookup}/geo?token=${ipInfoToken}`)
+      axios(
+        `http://ipinfo.io/${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`
+      )
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
     },
