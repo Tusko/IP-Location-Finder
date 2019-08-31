@@ -3,6 +3,8 @@
 </template>
 <script>
 let map, mapCircle;
+import { gMapStyle } from "./gmap-style";
+
 export default {
   name: "gVueMap",
   props: {
@@ -15,10 +17,6 @@ export default {
       default: 0
     },
     lng: {
-      type: String,
-      default: 0
-    },
-    accuracy: {
       type: String,
       default: 0
     }
@@ -38,28 +36,15 @@ export default {
             gestureHandling: "none",
             disableDefaultUI: true,
             zoomControl: false,
+            styles: gMapStyle,
             draggable: false,
             zoom: 9
           });
-
-          // Add the circle to the map.
-          if (this.accuracy) {
-            mapCircle = new google.maps.Circle({
-              strokeColor: "#000",
-              strokeOpacity: 0.6,
-              strokeWeight: 3,
-              fillColor: "#000",
-              fillOpacity: 0.35,
-              map: map,
-              center: { lat: +this.lat, lng: +this.lng },
-              radius: Math.sqrt(this.accuracy) * 1e4
-            });
-          }
         })
         .catch(e => alert("Google Maps API loading error"));
     },
     MapApiPanTo() {
-      map.panTo(new google.maps.LatLng(+this.lat, +this.lng));
+      if (map) map.panTo(new google.maps.LatLng(+this.lat, +this.lng));
     }
   },
   watch: {
@@ -75,6 +60,7 @@ export default {
 
 <style lang="scss">
 #map {
-  height: 100vh;
+  margin-top: -5vh;
+  height: 110vh;
 }
 </style>
