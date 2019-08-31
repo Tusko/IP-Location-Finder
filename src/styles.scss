@@ -1,5 +1,133 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+$font: "Raleway";
+$yellow: #ffc600;
+$black: #2b2b2b;
+$white: #fff;
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+html,
+body {
+  font-family: $font, sans-serif;
+  background: $black;
+  overflow: hidden;
+  font-size: 18px;
+  color: $white;
+  height: 100vh;
+}
+
+.lookup {
+  transform: translateX(-50%);
+  position: absolute;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  top: 10vh;
+  z-index: 2;
+  left: 50%;
+  .form-row {
+    position: relative;
+    margin: 20px auto;
+    > input[type="text"] {
+      background: rgba($white, 0.025);
+      transition: all 1s ease;
+      text-align: center;
+      font-family: $font;
+      font-size: 18px;
+      outline: 0 none;
+      padding: 0 20px;
+      color: #fff;
+      height: 50px;
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid rgba($white, 0.1);
+      &:focus {
+        border-bottom-color: $yellow;
+        color: $yellow;
+        & + button {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+    button.icon-search {
+      transition: all 0.5s;
+      visibility: hidden;
+      position: absolute;
+      background: none;
+      cursor: pointer;
+      height: 50px;
+      width: 50px;
+      padding: 0;
+      opacity: 0;
+      border: 0;
+      bottom: 0;
+      right: 0;
+      &:before {
+        border: 2px solid $white;
+        transition: all 1s;
+        border-radius: 50%;
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        content: "";
+        left: 13px;
+        top: 14px;
+      }
+      &:after {
+        transform: rotate(45deg);
+        transition: all 1s;
+        border-radius: 3px;
+        position: absolute;
+        background: $white;
+        bottom: 16px;
+        right: 12px;
+        content: "";
+        height: 2px;
+        width: 10px;
+      }
+      &:hover {
+        &:before {
+          border-color: $yellow;
+        }
+        &:after {
+          background: $yellow;
+        }
+      }
+    }
+  }
+  h5 {
+    font-weight: 300;
+    font-size: 16px;
+    opacity: 0.75;
+    b {
+      font-weight: 500;
+      display: block;
+    }
+  }
+}
+
+footer {
+  background: $black;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 0 10px;
+    vertical-align: top;
+    font-size: 14px;
+    color: $white;
+    &:hover {
+      text-decoration: underline;
+      color: $yellow;
+    }
+  }
 }
