@@ -59,7 +59,7 @@ export default {
   methods: {
     startLookup() {
       this.loading = true;
-      axios(`https://ipinfo.io/?token=${process.env.VUE_APP_IP_KEY}`)
+      axios(`${process.env.VUE_APP_IP_URL}?token=${process.env.VUE_APP_IP_KEY}`)
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
     },
@@ -68,7 +68,7 @@ export default {
       this.loading = true;
 
       axios(
-        `http://ipinfo.io/${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`
+        `${process.env.VUE_APP_IP_URL}${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`
       )
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
