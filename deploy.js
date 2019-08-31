@@ -1,6 +1,6 @@
 const FtpDeploy = require("ftp-deploy");
 const ftpDeploy = new FtpDeploy();
-require("dotenv").config();
+require("dotenv").config({ path: "./.env.local" });
 
 const log = (...args) => {
   console.log("→", ...args);
