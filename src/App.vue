@@ -53,6 +53,17 @@ export default {
       lng: null
     }
   }),
+  beforeCreate() {
+    if (!document.getElementById("mjuidHzeoaWw")) {
+      this.$swal.fire({
+        type: "error",
+        title: "Oops...",
+        text: "Please turn off AdBlock plugin to use webapp",
+        footer:
+          "<a href='https://www.softwarehow.com/disable-adblock/' target='_blank'>How to disable AdBlock?</a>"
+      });
+    }
+  },
   created() {
     if (this.$route.query.lookup) {
       this.lookup = this.$route.query.lookup;

@@ -2,7 +2,9 @@ import Vue from "vue";
 import App from "./App";
 import LoadScript from "vue-plugin-load-script";
 import VueRouter from "vue-router";
+import VueSweetalert2 from "vue-sweetalert2";
 
+Vue.use(VueSweetalert2);
 Vue.use(LoadScript);
 Vue.use(VueRouter);
 
