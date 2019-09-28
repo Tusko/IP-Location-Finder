@@ -2,7 +2,7 @@
   <div id="map"></div>
 </template>
 <script>
-let map, mapCircle;
+let map;
 import { gMapStyle } from "./gmap-style";
 
 export default {
@@ -10,11 +10,11 @@ export default {
   props: {
     lat: {
       type: String,
-      default: 0
+      default: "0"
     },
     lng: {
       type: String,
-      default: 0
+      default: "0"
     }
   },
   mounted() {
@@ -37,7 +37,7 @@ export default {
             zoom: 9
           });
         })
-        .catch(e => alert("Google Maps API loading error"));
+        .catch(() => alert("Google Maps API loading error"));
     },
     MapApiPanTo() {
       if (map) map.panTo(new google.maps.LatLng(+this.lat, +this.lng));

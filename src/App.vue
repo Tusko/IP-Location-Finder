@@ -2,7 +2,12 @@
   <div id="app">
     <vue-map v-show="!loading" :lat="coordinates.lat" :lng="coordinates.lng" />
     <marker-pulse :loading="loading" />
-    <form v-show="!loading" class="lookup" novalidate @submit.prevent="formLookup">
+    <form
+      v-show="!loading"
+      class="lookup"
+      novalidate
+      @submit.prevent="formLookup"
+    >
       <h1>IP Lookup</h1>
       <div class="form-row">
         <input

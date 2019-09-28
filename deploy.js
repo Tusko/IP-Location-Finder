@@ -3,7 +3,7 @@ const ftpDeploy = new FtpDeploy();
 require("dotenv").config({ path: "./.env.local" });
 
 const log = (...args) => {
-  console.log("→", ...args);
+  window.console.log("→", ...args);
 };
 
 const config = {
