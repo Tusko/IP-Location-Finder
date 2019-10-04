@@ -2,6 +2,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 // vue.config.js
 module.exports = {
+  productionSourceMap: false,
   configureWebpack: {
     optimization: {
       runtimeChunk: true,
@@ -13,6 +14,7 @@ module.exports = {
         new TerserPlugin({
           terserOptions: {
             extractComments: false,
+            sourceMap: false,
             parallel: true,
             output: {
               comments: false
