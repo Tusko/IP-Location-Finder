@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <vue-map v-show="!loading" :lat="coordinates.lat" :lng="coordinates.lng" />
-    <loader v-if="loading" />
-    <marker-pulse v-if="!loading" :loading="false" />
+    <loader v-if="loading || isError" />
+    <marker-pulse v-if="!loading && !isError" :loading="false" />
     <form
       v-show="!loading"
       class="lookup"
@@ -54,7 +54,7 @@ export default {
     location: null,
     isError: false,
     loading: true,
-    lookup: null,
+    lookup: "",
     coordinates: {
       lat: null,
       lng: null
@@ -73,23 +73,13 @@ export default {
   },
   created() {
     if (this.$route.query.lookup) {
-      this.lookup = this.$route.query.lookup;
+      this.lookup = this.$route.query.lookup + "/";
       this.formLookup(new Event("load"));
     } else {
-      this.startLookup();
+      this.formLookup(new Event("start"));
     }
   },
   methods: {
-    startLookup() {
-      this.loading = true;
-      api
-        .get(
-          `${process.env.VUE_APP_IP_URL}?token=${process.env.VUE_APP_IP_KEY}`,
-          { delay: 1e3 }
-        )
-        .then(res => this.dataIPfill(res.data))
-        .finally(() => (this.loading = false));
-    },
     formLookup(e) {
       e.preventDefault();
       this.loading = true;
@@ -99,6 +89,9 @@ export default {
           { delay: 1e3 }
         )
         .then(res => this.dataIPfill(res.data))
+        .catch(e => {
+          this.isError = true;
+        })
         .finally(() => (this.loading = false));
     },
     dataIPfill(o) {
