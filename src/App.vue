@@ -37,6 +37,11 @@
 <script>
 require("./styles.scss");
 import axios from "axios";
+import delayAdapterEnhancer from "axios-delay";
+
+const api = axios.create({
+  adapter: delayAdapterEnhancer(axios.defaults.adapter)
+});
 
 export default {
   name: "app",
@@ -77,17 +82,22 @@ export default {
   methods: {
     startLookup() {
       this.loading = true;
-      axios(`${process.env.VUE_APP_IP_URL}?token=${process.env.VUE_APP_IP_KEY}`)
+      api
+        .get(
+          `${process.env.VUE_APP_IP_URL}?token=${process.env.VUE_APP_IP_KEY}`,
+          { delay: 1e3 }
+        )
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
     },
     formLookup(e) {
       e.preventDefault();
       this.loading = true;
-
-      axios(
-        `${process.env.VUE_APP_IP_URL}${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`
-      )
+      api
+        .get(
+          `${process.env.VUE_APP_IP_URL}${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`,
+          { delay: 1e3 }
+        )
         .then(res => this.dataIPfill(res.data))
         .finally(() => (this.loading = false));
     },
