@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <vue-map v-show="!loading" :lat="coordinates.lat" :lng="coordinates.lng" />
-    <marker-pulse :loading="loading" />
+    <loader v-if="loading" />
+    <marker-pulse v-if="!loading" :loading="false" />
     <form
       v-show="!loading"
       class="lookup"
@@ -41,7 +42,8 @@ export default {
   name: "app",
   components: {
     "marker-pulse": () => import("./components/markerPulse"),
-    "vue-map": () => import("./components/VueMaps")
+    "vue-map": () => import("./components/VueMaps"),
+    loader: () => import("./components/loader")
   },
   data: () => ({
     location: null,
