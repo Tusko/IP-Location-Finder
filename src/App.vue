@@ -54,7 +54,7 @@ export default {
     location: null,
     isError: false,
     loading: true,
-    lookup: "",
+    lookup: null,
     coordinates: {
       lat: null,
       lng: null
@@ -73,7 +73,7 @@ export default {
   },
   created() {
     if (this.$route.query.lookup) {
-      this.lookup = this.$route.query.lookup + "/";
+      this.lookup = this.$route.query.lookup;
       this.formLookup(new Event("load"));
     } else {
       this.formLookup(new Event("start"));
@@ -83,9 +83,10 @@ export default {
     formLookup(e) {
       e.preventDefault();
       this.loading = true;
+      const lookupURI = this.lookup ? this.lookup + "/" : "";
       api
         .get(
-          `${process.env.VUE_APP_IP_URL}${this.lookup}/geo?token=${process.env.VUE_APP_IP_KEY}`,
+          `${process.env.VUE_APP_IP_URL}${lookupURI}geo?token=${process.env.VUE_APP_IP_KEY}`,
           { delay: 1e3 }
         )
         .then(res => this.dataIPfill(res.data))
