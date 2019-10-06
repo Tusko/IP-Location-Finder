@@ -90,7 +90,7 @@ export default {
           { delay: 1e3 }
         )
         .then(res => this.dataIPfill(res.data))
-        .catch(e => {
+        .catch(() => {
           this.isError = true;
         })
         .finally(() => (this.loading = false));
