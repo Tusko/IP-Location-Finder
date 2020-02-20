@@ -19,6 +19,12 @@
           size="15"
           pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"
         />
+        <i
+          class="icon-copy"
+          v-clipboard:copy="lookup"
+          v-clipboard:success="onCopySuccess"
+          v-clipboard:error="onCopyError"
+        ></i>
         <button type="submit" class="icon-search"></button>
       </div>
 
@@ -36,6 +42,7 @@
 
 <script>
 require("./styles.scss");
+
 import axios from "axios";
 import delayAdapterEnhancer from "axios-delay";
 
@@ -63,7 +70,7 @@ export default {
   beforeCreate() {
     if (!document.getElementById("mjuidHzeoaWw")) {
       this.$swal.fire({
-        type: "error",
+        icon: "error",
         title: "Oops...",
         text: "Please turn off AdBlock plugin to use webapp",
         footer:
@@ -113,6 +120,30 @@ export default {
             lookup: o.ip
           }
         });
+    },
+    onCopySuccess() {
+      this.$swal.fire({
+        icon: "success",
+        title: "Copied!",
+        text: "IP successfully copied to clipboard.",
+        showConfirmButton: false,
+        showCancelButton: false,
+        toast: true,
+        position: "top-end",
+        timer: 3000
+      });
+    },
+    onCopyError() {
+      this.$swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong. Try again!",
+        showConfirmButton: false,
+        showCancelButton: false,
+        toast: true,
+        position: "top-end",
+        timer: 3000
+      });
     }
   }
 };
