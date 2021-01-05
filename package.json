@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@sweetalert2/theme-dark": "^3.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-delay": "^1.0.0-rc6",
     "core-js": "^3.6.4",
     "sweetalert2": "^9.7.2",
