@@ -1,23 +1,25 @@
 <template>
-  <div id="map"></div>
+  <div id="map" ref="mapContainer"></div>
 </template>
 <script>
-let map;
 import { gMapStyle } from "./gmap-style";
 
 export default {
   name: "gVueMap",
   props: {
     lat: {
-      type: String,
+      type: [String, Number],
       default: "0"
     },
     lng: {
-      type: String,
+      type: [String, Number],
       default: "0"
     }
   },
-  mounted() {
+  data: () => ({
+    map: undefined
+  }),
+  beforeMount() {
     this.loadMapApiScript();
   },
   methods: {
@@ -26,7 +28,7 @@ export default {
         `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_MAP_API_KEY}`
       )
         .then(() => {
-          map = new google.maps.Map(document.getElementById("map"), {
+          this.map = new google.maps.Map(this.$refs.mapContainer, {
             center: { lat: +this.lat, lng: +this.lng },
             streetViewControl: false,
             gestureHandling: "none",
@@ -40,7 +42,8 @@ export default {
         .catch(() => alert("Google Maps API loading error"));
     },
     MapApiPanTo() {
-      if (map) map.panTo(new google.maps.LatLng(+this.lat, +this.lng));
+      if (this.map)
+        this.map.panTo(new google.maps.LatLng(+this.lat, +this.lng));
     }
   },
   watch: {
