@@ -35,7 +35,9 @@
       </h5>
     </form>
     <footer>
-      <a href="https://arsmoon.com/" target="_blank">Created by Arsmoon</a>
+      <a href="https://frontend.im/" target="_blank" rel="nofollow noopener"
+        >Created by Tusko Trush</a
+      >
     </footer>
   </div>
 </template>
@@ -47,7 +49,7 @@ import axios from "axios";
 import delayAdapterEnhancer from "axios-delay";
 
 const api = axios.create({
-  adapter: delayAdapterEnhancer(axios.defaults.adapter)
+  adapter: delayAdapterEnhancer(axios.defaults.adapter),
 });
 
 export default {
@@ -55,7 +57,7 @@ export default {
   components: {
     "marker-pulse": () => import("./components/markerPulse"),
     "vue-map": () => import("./components/VueMaps"),
-    loader: () => import("./components/loader")
+    loader: () => import("./components/loader"),
   },
   data: () => ({
     location: null,
@@ -64,8 +66,8 @@ export default {
     lookup: null,
     coordinates: {
       lat: null,
-      lng: null
-    }
+      lng: null,
+    },
   }),
   beforeCreate() {
     if (!document.getElementById("mjuidHzeoaWw")) {
@@ -74,7 +76,7 @@ export default {
         title: "Oops...",
         text: "Please turn off AdBlock plugin to use webapp",
         footer:
-          "<a href='https://www.softwarehow.com/disable-adblock/' target='_blank'>How to disable AdBlock?</a>"
+          "<a href='https://www.softwarehow.com/disable-adblock/' target='_blank'>How to disable AdBlock?</a>",
       });
     }
   },
@@ -96,7 +98,7 @@ export default {
           `${process.env.VUE_APP_IP_URL}${lookupURI}geo?token=${process.env.VUE_APP_IP_KEY}`,
           { delay: 1e3 }
         )
-        .then(res => this.dataIPfill(res.data))
+        .then((res) => this.dataIPfill(res.data))
         .catch(() => {
           this.isError = true;
         })
@@ -117,8 +119,8 @@ export default {
       if (this.$route.query.lookup !== o.ip)
         this.$router.push({
           query: {
-            lookup: o.ip
-          }
+            lookup: o.ip,
+          },
         });
     },
     onCopySuccess() {
@@ -130,7 +132,7 @@ export default {
         showCancelButton: false,
         toast: true,
         position: "top-end",
-        timer: 3000
+        timer: 3000,
       });
     },
     onCopyError() {
@@ -142,9 +144,9 @@ export default {
         showCancelButton: false,
         toast: true,
         position: "top-end",
-        timer: 3000
+        timer: 3000,
       });
-    }
-  }
+    },
+  },
 };
 </script>
