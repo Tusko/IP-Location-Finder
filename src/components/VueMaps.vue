@@ -3,40 +3,46 @@
 </template>
 <script>
 import { gMapStyle } from "./gmap-style";
+import { loadScript } from "vue-plugin-load-script";
 
 export default {
   name: "gVueMap",
   props: {
     lat: {
       type: [String, Number],
-      default: "0"
+      default: 0,
     },
     lng: {
       type: [String, Number],
-      default: "0"
-    }
+      default: 0,
+    },
   },
   data: () => ({
-    map: undefined
+    map: undefined,
   }),
   beforeMount() {
     this.loadMapApiScript();
   },
+  computed: {
+    latLng() {
+      return { lat: +this.lat, lng: +this.lng };
+    },
+  },
   methods: {
     loadMapApiScript() {
-      this.$loadScript(
+      loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${process.env.VUE_APP_MAP_API_KEY}`
       )
         .then(() => {
           this.map = new google.maps.Map(this.$refs.mapContainer, {
-            center: { lat: +this.lat, lng: +this.lng },
+            center: this.latLng,
             streetViewControl: false,
             gestureHandling: "none",
             disableDefaultUI: true,
             zoomControl: false,
             styles: gMapStyle,
             draggable: false,
-            zoom: 9
+            zoom: 9,
           });
         })
         .catch(() => alert("Google Maps API loading error"));
@@ -44,16 +50,17 @@ export default {
     MapApiPanTo() {
       if (this.map)
         this.map.panTo(new google.maps.LatLng(+this.lat, +this.lng));
-    }
+    },
   },
   watch: {
-    lat() {
-      this.MapApiPanTo();
+    latLng: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.MapApiPanTo();
+      },
     },
-    lng() {
-      this.MapApiPanTo();
-    }
-  }
+  },
 };
 </script>
 

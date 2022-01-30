@@ -8,7 +8,7 @@ module.exports = {
       runtimeChunk: true,
       minimize: true,
       splitChunks: {
-        chunks: "all"
+        chunks: "all",
       },
       minimizer: [
         new TerserPlugin({
@@ -17,12 +17,12 @@ module.exports = {
             sourceMap: false,
             parallel: true,
             output: {
-              comments: false
+              comments: false,
             },
-            ecma: 6
-          }
-        })
-      ]
-    }
-  }
+            ecma: 6,
+          },
+        }),
+      ],
+    },
+  },
 };

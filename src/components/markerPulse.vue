@@ -30,9 +30,9 @@ export default {
   props: {
     loading: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 };
 </script>
 
@@ -60,7 +60,7 @@ export default {
   transition: transform 2s ease;
   transform-origin: center;
   position: absolute;
-  width: 200px;
+  width: 120px;
   z-index: 1;
   left: 50%;
   top: 50%;

@@ -22,15 +22,15 @@ const config = {
   deleteRemote: true,
   deleteRoot: false,
   // Passive mode is forced (EPSV command is not sent)
-  forcePasv: true
+  forcePasv: true,
 };
 
 ftpDeploy
   .deploy(config)
   .then(() => log("✅", " DEPLOY Finish"))
-  .catch(err => log("❌", " DEPLOY Error", err));
+  .catch((err) => log("❌", " DEPLOY Error", err));
 
-ftpDeploy.on("uploading", data => {
+ftpDeploy.on("uploading", (data) => {
   log(
     "‌📦",
     ` uploading ${parseInt(

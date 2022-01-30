@@ -7,16 +7,20 @@
       v-show="!loading"
       class="lookup"
       novalidate
+      id="search"
       @submit.prevent="formLookup"
     >
-      <h1>IP Lookup</h1>
+      <h1>IP Address Tracker</h1>
       <div class="form-row">
         <input
+          id="ip-search"
           v-model="lookup"
           type="text"
           minlength="7"
           maxlength="15"
           size="15"
+          autocomplete="off"
+          data-lpignore="true"
           pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"
         />
         <i
@@ -29,10 +33,20 @@
       </div>
 
       <h5 v-if="isError">IP Not Found</h5>
-      <h5 v-else>
-        <b>Location:</b>
-        {{ location }}
-      </h5>
+      <div v-else-if="apiResponse" class="ip-details">
+        <div>
+          <h5>Location</h5>
+          <b>{{ formatLocation }}</b>
+        </div>
+        <div>
+          <h5>Timezone</h5>
+          <b>{{ apiResponse.timezone }}</b>
+        </div>
+        <div>
+          <h5>ISP</h5>
+          <b>{{ apiResponse.org || "N/A" }}</b>
+        </div>
+      </div>
     </form>
     <footer>
       <a href="https://frontend.im/" target="_blank" rel="nofollow noopener"
@@ -43,8 +57,6 @@
 </template>
 
 <script>
-require("./styles.scss");
-
 import axios from "axios";
 import delayAdapterEnhancer from "axios-delay";
 
@@ -60,10 +72,10 @@ export default {
     loader: () => import("./components/loader"),
   },
   data: () => ({
-    location: null,
     isError: false,
     loading: true,
     lookup: null,
+    apiResponse: null,
     coordinates: {
       lat: null,
       lng: null,
@@ -88,6 +100,12 @@ export default {
       this.formLookup(new Event("start"));
     }
   },
+  computed: {
+    formatLocation() {
+      const { postal, city, region, country } = this.apiResponse ?? {};
+      return [postal, city, region, country].filter(Boolean).join(", ");
+    },
+  },
   methods: {
     formLookup(e) {
       e.preventDefault();
@@ -98,9 +116,10 @@ export default {
           `${process.env.VUE_APP_IP_URL}${lookupURI}geo?token=${process.env.VUE_APP_IP_KEY}`,
           { delay: 1e3 }
         )
-        .then((res) => this.dataIPfill(res.data))
+        .then(({ data }) => this.dataIPfill(data))
         .catch(() => {
           this.isError = true;
+          this.apiResponse = null;
         })
         .finally(() => (this.loading = false));
     },
@@ -108,13 +127,12 @@ export default {
       if (o.bogon) return (this.isError = true);
       const crdnts = o.loc.split(",");
       this.isError = false;
+
       this.coordinates.lat = crdnts[0];
       this.coordinates.lng = crdnts[1];
+
+      this.apiResponse = { ...o };
       this.lookup = o.ip;
-      this.location =
-        (o.city ? o.city + ", " : "") +
-        (o.region ? o.region + ", " : "") +
-        o.country;
 
       if (this.$route.query.lookup !== o.ip)
         this.$router.push({
@@ -150,3 +168,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" src="./styles.scss"></style>
