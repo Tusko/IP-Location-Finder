@@ -45,3 +45,7 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Support project
+
+https://send.monobank.ua/jar/ABrTtpcSbR
